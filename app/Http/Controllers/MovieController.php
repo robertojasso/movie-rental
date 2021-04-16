@@ -2,19 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Movie;
+use App\Models\UpdatesLog;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MovieController extends Controller
 {
     public function index()
     {
-        return Movie::all();
+        // only show available movies
+        return Movie::where('available', true)->get();
     }
 
     public function show(Movie $movie)
     {
-        return $movie;
+        if($movie->available or (Auth::check() and Auth::user()->isAdmin())) {
+            return $movie;
+        }
+        return response()->json(['message' => 'Movie not found.'], 404);
     }
     
     public function store(Request $request)
@@ -25,7 +31,24 @@ class MovieController extends Controller
     
     public function update(Request $request, Movie $movie)
     {
+        $oldValues = $movie->getOriginal();
+        
         $movie->update($request->all());
+        
+        $newValues = $movie->getChanges();
+        unset($newValues['updated_at']);
+
+        // save update to log
+        foreach($newValues as $field => $newValue) {
+            UpdatesLog::create([
+                'user_id' => auth()->user()->id,
+                'movie_id' => $movie->id,
+                'updated_field' => $field,
+                'old_value' => $oldValues[$field],
+                'new_value' => $newValue
+            ]);
+        }
+
         return response()->json($movie, 200);
     }
     

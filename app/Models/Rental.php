@@ -11,7 +11,8 @@ class Rental extends Model
         'movie_id',
         'quantity',
         'unit_price',
-        'return_date',
+        'return_by',
+        'returned_on',
         'penalty'
     ];
 }

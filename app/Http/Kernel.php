@@ -2,6 +2,8 @@
 
 namespace App\Http;
 
+use Illuminate\Routing\Router;
+use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -42,6 +44,8 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            // custom middleware
+            \App\Http\Middleware\JsonResponseMiddleware::class
         ],
     ];
 
@@ -62,5 +66,16 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        // custom middleware
+        'admin' =>\App\Http\Middleware\AdminMiddleware::class
     ];
+
+    public function __construct(Application $app, Router $router)
+    {
+        parent::__construct($app, $router);
+        
+        // override JsonResponse over other middleware to get json response
+        // even when request terminated by Auth middleware
+        $this->prependToMiddlewarePriority(\App\Http\Middleware\JsonResponseMiddleware::class);
+    }
 }

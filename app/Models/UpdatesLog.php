@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class UpdatesLog extends Model
 {
+    // explicit declaration since laravel misbehaves
+    protected $table = 'updates_log';
+    
     protected $fillable = [
         'user_id',
         'movie_id',
