@@ -64,6 +64,33 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function rentals()
+    {
+        return $this->hasMany(Rental::class);
+    }
+
+    public function logs()
+    {
+        return $this->hasMany(UpdatesLog::class);
+    }
+
+    // decided to use this noun instead of "sales" since it makes more sense
+    // from the user's perspective
+    public function purchases()
+    {
+        return $this->hasMany(Sale::class);
+    }
+
+    /**
+     * Return boolean indicating if logged-in user is an admin
+     *
+     * @return boolean
+     */
     public function isAdmin()
     {
         return $this->role == 'admin' ? true : false;

@@ -10,4 +10,9 @@ class Image extends Model
         'movie_id',
         'url'
     ];
+
+    public function movie()
+    {
+        return $this->belongsTo(Movie::class);
+    }
 }

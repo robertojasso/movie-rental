@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Rental;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -25,4 +26,29 @@ class Movie extends Model
         'sale_price',
         'available'
     ];
+
+    public function images()
+    {
+        return $this->hasMany(Image::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function rentals()
+    {
+        return $this->hasMany(Rental::class);
+    }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
+
+    public function logs()
+    {
+        return $this->hasMany(UpdatesLog::class);
+    }
 }
