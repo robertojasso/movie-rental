@@ -44,7 +44,7 @@ Route::middleware(['auth', 'admin'])->group(function() {
     
     Route::get('/rentals', [RentalController::class, 'index']);
     Route::get('/rentals/pending', [RentalController::class, 'getPendingRentals']);
-    Route::get('/movies/{movie}/rentals', [RentalController::class, 'getRentalsByMovie']);
+    Route::get('/rentals/{movie}', [RentalController::class, 'getRentalsByMovie']);
     // Route::get('/users/{user_id}/rentals', [RentalController::class, 'getRentalsByUser']);
     
     Route::get('/sales', [SaleController::class, 'index']);

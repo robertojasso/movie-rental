@@ -75,16 +75,14 @@ class RentalController extends Controller
      */
     public function update(Request $request)
     {
-        $movie = Movie::findOrFail($request->movie_id);
-
-        // get the oldest rental pending return for this movie and user
+        return 'holi';
         $rental = Rental::findOrFail($request->rental_id);
-
         $rental->update([
             'returned_on' => Carbon::now(),
             'penalty' => RentalService::calculatePenalty($rental)
-        ]);
-
+            ]);
+            
+        $movie = Movie::findOrFail($rental->movie->id);
         // return the copy to the stock
         MovieService::increaseStock($movie);
 
