@@ -44,19 +44,18 @@ class RentalController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Movie $movie)
     {
-        $movie = Movie::findOrFail($request->movie_id);
-
-        // check if there are movie copies in stock
+        // check if there are copies in stock
         if(!MovieService::inStock($movie)) {
-            return response()->json(['message' => 'Movie is out of stock.']);
+            return response()->json(['message' => 'Movie is out of stock.'], 404);
         }
 
         $rental = Rental::create([
             'user_id' => Auth::user()->id,
             'movie_id' => $movie->id,
             'price' => $movie->rental_price,
+            // renter gets two days to watch the movie
             'return_by' => Carbon::now()->addHours(48)
         ]);
         
@@ -73,9 +72,8 @@ class RentalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, Rental $rental)
     {
-        $rental = Rental::findOrFail($request->rental_id);
         $rental->update([
             'returned_on' => Carbon::now(),
             'penalty' => RentalService::calculatePenalty($rental)

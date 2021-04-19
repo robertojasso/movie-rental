@@ -27,9 +27,9 @@ Route::middleware('auth')->group(function() {
 
     // liking, renting or buying movies requires log-in
     // Route::get('/movies/{movie}/like', [LikeController::class, 'toggle']);
-    Route::post('/rent', [RentalController::class, 'store']);
-    Route::post('/return', [RentalController::class, 'update']);
-    Route::post('/buy', [SaleController::class, 'store']);
+    Route::post('/rent/{movie}', [RentalController::class, 'store']);
+    Route::put('/return/{rental}', [RentalController::class, 'update']);
+    Route::post('/buy/{movie}', [SaleController::class, 'store']);
 });
 
 // only admin users can create, update or delete movies
