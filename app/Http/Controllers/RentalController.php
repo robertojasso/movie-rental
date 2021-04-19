@@ -75,7 +75,6 @@ class RentalController extends Controller
      */
     public function update(Request $request)
     {
-        return 'holi';
         $rental = Rental::findOrFail($request->rental_id);
         $rental->update([
             'returned_on' => Carbon::now(),
