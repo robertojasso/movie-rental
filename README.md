@@ -24,12 +24,12 @@ Follow next steps using a command-line tool:
 ## Using Postman for testing the API
 
 Provided in the root of the project are a couple of files which can be useful for testing this API: a Postman environment JSON file and a Postman collection JSON file.
-- The environment file contains variables used throughout the requests to make testing dynamic.
+- The environment file contains variables used throughout the requests to make testing dynamic. For example, 'heroku-domain', which contains the URL for the Heroku app, and 'local-domain, which contains the URL for the local Laravel server.
 - The collection file contains a set of requests for testing most of the API endpoints.
 
 ## Authentication and Authorization
 
-Auth is done via JWT: start by registering a user through the given endpoint, then log-in this user, get the "access_token" string from the response, and use it as a bearer token to auth every request. (Use the provided environment and collection files to automate retrieval and application of the JWT).
+Auth is done via JWT: start by registering a user through the given endpoint, then log-in this user, get the "access_token" string from the response, and use it as a bearer token to auth every request. Using the provided environment variables and collection allows automated retrieval and usage of the JWT.
 
 
 ## API endpoints
