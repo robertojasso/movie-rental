@@ -38,16 +38,17 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::put('/movies/{movie}', [MovieController::class, 'update']);
     Route::delete('/movies/{movie}', [MovieController::class, 'destroy']);
     
-    // Route::get('/likes', [LikeController::class, 'index']);
-    // Route::get('/movies/{movie}/likes', [LikeController::class, 'getLikesByMovie']);
-    // Route::get('/users/{user}/likes', [LikeController::class, 'getLikesByUser']);
-    
     Route::get('/rentals', [RentalController::class, 'index']);
     Route::get('/rentals/pending', [RentalController::class, 'getPendingRentals']);
     Route::get('/rentals/{movie}', [RentalController::class, 'getRentalsByMovie']);
-    // Route::get('/users/{user_id}/rentals', [RentalController::class, 'getRentalsByUser']);
+    Route::get('/rentals/{user}', [RentalController::class, 'getRentalsByUser']);
     
     Route::get('/sales', [SaleController::class, 'index']);
+
+    // pending to implement likes feature
+    Route::get('/likes', [LikeController::class, 'index']);
+    Route::get('/movies/{movie}/likes', [LikeController::class, 'getLikesByMovie']);
+    Route::get('/users/{user}/likes', [LikeController::class, 'getLikesByUser']);
 });
 
 // login and register can be done without being logged-in
