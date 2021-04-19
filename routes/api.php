@@ -26,10 +26,12 @@ Route::middleware('auth')->group(function() {
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
 
     // liking, renting or buying movies requires log-in
-    // Route::get('/movies/{movie}/like', [LikeController::class, 'toggle']);
     Route::post('/rent/{movie}', [RentalController::class, 'store']);
     Route::put('/return/{rental}', [RentalController::class, 'update']);
     Route::post('/buy/{movie}', [SaleController::class, 'store']);
+    
+    // pending to implement likes feature
+    Route::post('/like/{movie}', [LikeController::class, 'update']);
 });
 
 // only admin users can create, update or delete movies
@@ -40,15 +42,19 @@ Route::middleware(['auth', 'admin'])->group(function() {
     
     Route::get('/rentals', [RentalController::class, 'index']);
     Route::get('/rentals/pending', [RentalController::class, 'getPendingRentals']);
-    Route::get('/rentals/{movie}', [RentalController::class, 'getRentalsByMovie']);
-    Route::get('/rentals/{user}', [RentalController::class, 'getRentalsByUser']);
+    Route::get('/rentals/movie/{movie}', [RentalController::class, 'getRentalsByMovie']);
+    Route::get('/rentals/user/{user}', [RentalController::class, 'getRentalsByUser']);
     
     Route::get('/sales', [SaleController::class, 'index']);
+    
+    // pending to implement filtered sales listings
+    Route::get('/sales/movie/{movie}', [SalesController::class, 'getSalesByMovie']);
+    Route::get('/sales/user/{user}', [SalesController::class, 'getSalesByUser']);
 
     // pending to implement likes feature
     Route::get('/likes', [LikeController::class, 'index']);
-    Route::get('/movies/{movie}/likes', [LikeController::class, 'getLikesByMovie']);
-    Route::get('/users/{user}/likes', [LikeController::class, 'getLikesByUser']);
+    Route::get('/likes/movie/{movie}', [LikeController::class, 'getLikesByMovie']);
+    Route::get('/likes/user/{user}', [LikeController::class, 'getLikesByUser']);
 });
 
 // login and register can be done without being logged-in
