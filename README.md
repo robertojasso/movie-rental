@@ -37,6 +37,8 @@ Auth is done via JWT: start by registering a user through the given endpoint, th
 ### Guests (no authentication required)
 
 `POST /register`
+Create a new user entry. All fields are mandatory.
+Role can be either: 'user' or 'admin'.
 ```
 {
     "email":"user@email.com",
@@ -48,69 +50,85 @@ Auth is done via JWT: start by registering a user through the given endpoint, th
 ```
 
 `POST /login`
+Authenticate a user. All fields are mandatory.
 ```
 {
     "email":"user@email.com",
     "password":"password"
 }
 ```
-`GET /movies`
 
+`GET /movies`
+Get a list of all available movies. Admins get unavailable movies also.
 
 `GET /movies/{movie_id}`
-
+Get information on a specific movie.
 
 
 ### Users (authentication required)
 
 `GET /user-profile`
+Get information on the authenticated user.
 
 `POST /refresh`
-```
-
-```
+Request a fresh new JWT for the authenticated user.
 
 `POST /logout`
-```
-
-```
+Log out the authenticated user.
 
 `POST /buy/{movie_id}`
+Request to buy a movie. Body is optional.
 ```
-
+{
+    "quantity": 1
+}
 ```
 
 `POST /rent/{movie_id}`
-```
-
-```
+Request to rent a movie.
 
 `PUT /return/{rental_id}`
-```
-
-```
+Request to return a movie.
 
 
 ### Admins (authentication + authorization required)
 
 `POST /movies`
+Create a new movie. All fields are mandatory.
+```
+{
+    "title": "mr. nobody",
+    "description": "guy goes back and forth between his different possibilities of lives",
+    "stock": 5,
+    "rental_price": 9.99,
+    "sale_price": 19.99,
+    "available": true
+}
 ```
 
+`PUT /movies/{movie_id}`
+Update the information of a movie. All fields are optional.
+```
+{
+    "stock": 20,
+    "available": true
+}
 ```
 
-`PUT /movies/{movie}`
-```
-
-```
-
-`DELETE /movies/{movie}`
+`DELETE /movies/{movie_id}`
+Remove a movie.
 
 `GET /rentals`
+Get a list of all rentals.
 
 `GET /rentals/pending`
+Get a list of all pending rentals.
 
-`GET /rentals/movie/{movie}`
+`GET /rentals/movie/{movie_id}`
+Get a list of all rentals for a specific movie.
 
-`GET /rentals/user/{user}`
+`GET /rentals/user/{user_id}`
+Get a list of all the rentals for a specific user.
 
 `GET /sales`
+Get a list of all sales.

@@ -46,7 +46,6 @@ class RentalController extends Controller
      */
     public function store(Request $request, Movie $movie)
     {
-        // check if there are copies in stock
         if(!MovieService::inStock($movie)) {
             return response()->json(['message' => 'Movie is out of stock.'], 404);
         }
@@ -59,7 +58,7 @@ class RentalController extends Controller
             'return_by' => Carbon::now()->addHours(48)
         ]);
         
-        // reduce the movie's stock
+        // take the rented copies out of the stock
         MovieService::decreaseStock($movie);
         
         return response()->json($rental, 201);
@@ -80,7 +79,7 @@ class RentalController extends Controller
             ]);
             
         $movie = Movie::findOrFail($rental->movie->id);
-        // return the copy to the stock
+        // return the copies to the stock
         MovieService::increaseStock($movie);
 
         return response()->json($rental, 201);

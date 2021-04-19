@@ -671,7 +671,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "{\n    \"quantity\": 1\n}",
 					"options": {
 						"raw": {
 							"language": "json"

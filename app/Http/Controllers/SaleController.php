@@ -30,8 +30,7 @@ class SaleController extends Controller
         $sale = Sale::create([
             'user_id' => Auth::user()->id,
             'movie_id' => $movie->id,
-            // hardcoded due to lack of time for more elaborate logic
-            'quantity' => 1,
+            'quantity' => $request->quantity,
             'unit_price' => $movie->sale_price
         ]);
 
