@@ -33,34 +33,13 @@
 					}
 				],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "email",
-							"value": "user@email.com",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "password",
-							"type": "text"
-						},
-						{
-							"key": "password_confirmation",
-							"value": "password",
-							"type": "text"
-						},
-						{
-							"key": "name",
-							"value": "User",
-							"type": "text"
-						},
-						{
-							"key": "role",
-							"value": "user",
-							"type": "text"
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"user@email.com\",\n    \"password\":\"password\",\n    \"password_confirmation\":\"password\",\n    \"name\":\"User\",\n    \"role\":\"user\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
 				"url": {
 					"raw": "{{heroku-domain}}/api/register",
@@ -102,34 +81,13 @@
 					}
 				],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "email",
-							"value": "admin@email.com",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "password",
-							"type": "text"
-						},
-						{
-							"key": "password_confirmation",
-							"value": "password",
-							"type": "text"
-						},
-						{
-							"key": "name",
-							"value": "Admin",
-							"type": "text"
-						},
-						{
-							"key": "role",
-							"value": "admin",
-							"type": "text"
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"admin@email.com\",\n    \"password\":\"password\",\n    \"password_confirmation\":\"password\",\n    \"name\":\"Admin\",\n    \"role\":\"admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
 				"url": {
 					"raw": "{{heroku-domain}}/api/register",
@@ -165,19 +123,13 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "email",
-							"value": "user@email.com",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "password",
-							"type": "text"
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"user@email.com\",\n    \"password\":\"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
 				"url": {
 					"raw": "{{heroku-domain}}/api/login",
@@ -213,19 +165,13 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "email",
-							"value": "admin@email.com",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "password",
-							"type": "text"
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"admin@email.com\",\n    \"password\":\"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
 				"url": {
 					"raw": "{{heroku-domain}}/api/login",

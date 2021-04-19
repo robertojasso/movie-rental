@@ -25,40 +25,92 @@ Follow next steps using a command-line tool:
 
 Provided in the root of the project are a couple of files which can be useful for testing this API: a Postman environment JSON file and a Postman collection JSON file.
 - The environment file contains variables used throughout the requests to make testing dynamic.
-- The collection file contains a set of requests for testing all of the API endpoints.
+- The collection file contains a set of requests for testing most of the API endpoints.
 
 ## Authentication and Authorization
 
-Auth is done via JWT: start by registering a user through the given endpoint, then log-in this user, get the "access_token" string from the response, and use it as a bearer token to auth every request.
+Auth is done via JWT: start by registering a user through the given endpoint, then log-in this user, get the "access_token" string from the response, and use it as a bearer token to auth every request. (Use the provided environment and collection files to automate retrieval and application of the JWT).
 
 
 ## API endpoints
 
 ### Guests (no authentication required)
 
-POST /login
-POST /register
-GET /movies
-GET /movies/{movie_id}
+`POST /register`
+```
+{
+    "email":"user@email.com",
+    "password":"password",
+    "password_confirmation":"password",
+    "name":"User",
+    "role":"user"
+}
+```
+
+`POST /login`
+```
+{
+    "email":"user@email.com",
+    "password":"password"
+}
+```
+`GET /movies`
+
+
+`GET /movies/{movie_id}`
+
 
 
 ### Users (authentication required)
 
-POST /logout
-POST /refresh
-GET /user-profile
-POST /rent/{movie_id}
-PUT /return/{rental_id}
-POST /buy/{movie_id}
+`GET /user-profile`
+
+`POST /refresh`
+```
+
+```
+
+`POST /logout`
+```
+
+```
+
+`POST /buy/{movie_id}`
+```
+
+```
+
+`POST /rent/{movie_id}`
+```
+
+```
+
+`PUT /return/{rental_id}`
+```
+
+```
 
 
 ### Admins (authentication + authorization required)
 
-POST /movies
-PUT /movies/{movie}
-DELETE /movies/{movie}
-GET /rentals
-GET /rentals/pending
-GET /rentals/movie/{movie}
-GET /rentals/user/{user}
-GET /sales
+`POST /movies`
+```
+
+```
+
+`PUT /movies/{movie}`
+```
+
+```
+
+`DELETE /movies/{movie}`
+
+`GET /rentals`
+
+`GET /rentals/pending`
+
+`GET /rentals/movie/{movie}`
+
+`GET /rentals/user/{user}`
+
+`GET /sales`
