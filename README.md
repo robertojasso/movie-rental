@@ -1,62 +1,64 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Movie Rental (Laravel app)
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+RESTful API to manage a small movie rental.
 
-## About Laravel
+- [Go to Heroku app](https://movie-rental-roberto-jasso.herokuapp.com).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Local installation
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Follow next steps using a command-line tool:
 
-## Learning Laravel
+1. Download and install the latest versions of `php`, `mysql` and `composer` in your local machine.
+2. Clone [the repo](https://gitlab.com/applaudostudios/php-test/roberto-jasso) into a local directory.
+3. Run `composer install` from inside the project's directory to get all of its dependencies.
+4. Create a local MySQL database and get its name, host, port, username, and password.
+5. Copy the `.env.example` file into a new `.env` file and put the database info into the 'DB_'-prefixed placeholders.
+6. Run `php artisan key:generate` to get a new app key automatically installed to `.env` file.
+7. Run `php artisan jwt:secret` to get a new JWT secret automatically installed to `.env` file.
+8. Run `php artisan migrate` from inside the project's directory to set up the database for the project.
+9. Run `php artisan serve` from inside the project's directory to start a server running the project.
+10. Use any HTTP client (such as Postman) to make requests to the API.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Using Postman for testing the API
 
-## Laravel Sponsors
+Provided in the root of the project are a couple of files which can be useful for testing this API: a Postman environment JSON file and a Postman collection JSON file.
+- The environment file contains variables used throughout the requests to make testing dynamic.
+- The collection file contains a set of requests for testing all of the API endpoints.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Authentication and Authorization
 
-### Premium Partners
+Auth is done via JWT: start by registering a user through the given endpoint, then log-in this user, get the "access_token" string from the response, and use it as a bearer token to auth every request.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
 
-## Contributing
+## API endpoints
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Guests (no authentication required)
 
-## Code of Conduct
+POST /login
+POST /register
+GET /movies
+GET /movies/{movie_id}
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+### Users (authentication required)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+POST /logout
+POST /refresh
+GET /user-profile
+POST /rent/{movie_id}
+PUT /return/{rental_id}
+POST /buy/{movie_id}
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Admins (authentication + authorization required)
+
+POST /movies
+PUT /movies/{movie}
+DELETE /movies/{movie}
+GET /rentals
+GET /rentals/pending
+GET /rentals/movie/{movie}
+GET /rentals/user/{user}
+GET /sales
