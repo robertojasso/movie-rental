@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Movie;
 use App\Models\Rental;
 use Illuminate\Http\Request;
+use App\Http\Services\MovieService;
+use App\Http\Services\RentalService;
 use Illuminate\Support\Facades\Auth;
 
 class RentalController extends Controller
@@ -26,10 +28,9 @@ class RentalController extends Controller
         return Rental::where('returned_on', null)->get();
     }
 
-    public function getRentalsByMovie($movie_id)
+    public function getRentalsByMovie(Movie $movie)
     {
-        $result = Rental::where('movie_id', $movie_id)->get();
-        return count($result) > 0 ? $result : [];
+        return Rental::where('movie_id', $movie->id)->get();
     }
 
     public function getRentalsByUser(User $user)
@@ -43,10 +44,12 @@ class RentalController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Movie $movie)
+    public function store(Request $request)
     {
+        $movie = Movie::findOrFail($request->movie_id);
+
         // check if there are movie copies in stock
-        if($movie->stock < 1) {
+        if(!MovieService::inStock($movie)) {
             return response()->json(['message' => 'Movie is out of stock.']);
         }
 
@@ -58,9 +61,8 @@ class RentalController extends Controller
         ]);
         
         // reduce the movie's stock
-        $movie->stock--;
-        $movie->save();
-
+        MovieService::decreaseStock($movie);
+        
         return response()->json($rental, 201);
     }
 
@@ -71,44 +73,21 @@ class RentalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Movie $movie)
+    public function update(Request $request)
     {
+        $movie = Movie::findOrFail($request->movie_id);
+
         // get the oldest rental pending return for this movie and user
-        $rental = Rental::where('user_id', Auth::user()->id)->where('movie_id', $movie->id)->where('returned_on', null)->orderBy('return_by')->first();
-        
-        // if no pending returns for movie and user combination, 404
-        if(!$rental) {
-            return response()->json(['message' => 'No pending returns for this movie.'], 404);
-        }
-        
-        $penalty = $this->calculatePenalty($rental);
+        $rental = Rental::findOrFail($request->rental_id);
 
         $rental->update([
             'returned_on' => Carbon::now(),
-            'penalty' => $penalty
+            'penalty' => RentalService::calculatePenalty($rental)
         ]);
 
         // return the copy to the stock
-        $movie->stock++;
-        $movie->save();
+        MovieService::increaseStock($movie);
 
         return response()->json($rental, 201);
-    }
-
-    /**
-     * Determine if a movie return deserves a penalty.
-     * 
-     * @param Rental $rental
-     * @return null | float
-     */
-    public function calculatePenalty($rental)
-    {
-        $penalty = null;
-        // check if return is delayed
-        if(Carbon::now()->isAfter($rental->return_by)) {
-            $delay = Carbon::now()->diffInhours($rental->return_by);
-            // for every day of delayed return, charge the whole rent price
-            $penalty = $rental->price * ($delay / 24);
-        }
     }
 }

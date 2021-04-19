@@ -6,7 +6,6 @@ use App\Models\Movie;
 use App\Models\UpdatesLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 
 class MovieController extends Controller
 {
@@ -47,7 +46,7 @@ class MovieController extends Controller
         return response()->json(null, 204);
     }
 
-    public function saveUpdateToLog($movieId, $oldValues, $newValues)
+    private function saveUpdateToLog($movieId, $oldValues, $newValues)
     {
         unset($newValues['updated_at']);
 

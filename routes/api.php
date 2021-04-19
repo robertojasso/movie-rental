@@ -26,10 +26,10 @@ Route::middleware('auth')->group(function() {
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
 
     // liking, renting or buying movies requires log-in
-    Route::get('/movies/{movie}/like', [LikeController::class, 'toggle']);
-    Route::get('/movies/{movie}/rent', [RentalController::class, 'store']);
-    Route::get('/movies/{movie}/return', [RentalController::class, 'update']);
-    Route::get('/movies/{movie}/buy', [SaleController::class, 'store']);
+    // Route::get('/movies/{movie}/like', [LikeController::class, 'toggle']);
+    Route::post('/rent', [RentalController::class, 'store']);
+    Route::post('/return', [RentalController::class, 'update']);
+    Route::post('/buy', [SaleController::class, 'store']);
 });
 
 // only admin users can create, update or delete movies
@@ -38,15 +38,14 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::put('/movies/{movie}', [MovieController::class, 'update']);
     Route::delete('/movies/{movie}', [MovieController::class, 'destroy']);
     
-    Route::get('/likes', [LikeController::class, 'index']);
-    Route::get('/movies/{movie}/likes', [LikeController::class, 'getLikesByMovie']);
-    Route::get('/users/{user}/likes', [LikeController::class, 'getLikesByUser']);
+    // Route::get('/likes', [LikeController::class, 'index']);
+    // Route::get('/movies/{movie}/likes', [LikeController::class, 'getLikesByMovie']);
+    // Route::get('/users/{user}/likes', [LikeController::class, 'getLikesByUser']);
     
     Route::get('/rentals', [RentalController::class, 'index']);
     Route::get('/rentals/pending', [RentalController::class, 'getPendingRentals']);
-    // breaking convention {movie} because error 500 thrown on inexistent movie
-    Route::get('/movies/{movie_id}/rentals', [RentalController::class, 'getRentalsByMovie']);
-    Route::get('/users/{user_id}/rentals', [RentalController::class, 'getRentalsByUser']);
+    Route::get('/movies/{movie}/rentals', [RentalController::class, 'getRentalsByMovie']);
+    // Route::get('/users/{user_id}/rentals', [RentalController::class, 'getRentalsByUser']);
     
     Route::get('/sales', [SaleController::class, 'index']);
 });

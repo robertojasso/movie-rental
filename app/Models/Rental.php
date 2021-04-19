@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Rental extends Model
@@ -23,5 +24,14 @@ class Rental extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public static function getOldestRentalPendingReturn(Movie $movie, User $user)
+    {
+        return self::where('movie_id', $movie->id)
+            ->where('user_id', $user->id)
+            ->where('returned_on', null)
+            ->orderBy('return_by')
+            ->first();
     }
 }
